@@ -137,3 +137,5 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+own-project-employees-app/package-lock.json
+own-project-employees-app/.gitignore
