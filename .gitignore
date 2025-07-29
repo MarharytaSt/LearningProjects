@@ -139,3 +139,4 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 own-project-employees-app/package-lock.json
 own-project-employees-app/.gitignore
+own-project-employees-app-BE/package-lock.json
