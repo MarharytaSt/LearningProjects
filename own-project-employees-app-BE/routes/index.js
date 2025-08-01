@@ -1,9 +1,14 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express';
+
+const router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.json('Backend working');
 });
 
-module.exports = router;
+router.post('/mongo/test', function(req, res, next) {
+
+});
+
+export default router;
