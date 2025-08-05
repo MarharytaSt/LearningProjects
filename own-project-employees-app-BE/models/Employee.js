@@ -1,6 +1,5 @@
 export class Employee {
-    constructor(id, firstName, lastName, salary, promoting) {
-        this.id = id;
+    constructor(firstName, lastName, salary, promoting) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.salary = salary;
