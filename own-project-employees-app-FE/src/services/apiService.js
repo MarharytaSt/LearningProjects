@@ -1,13 +1,16 @@
-import {BaseUrl} from '../settings/apiSettings';
+import { BaseUrl } from '../settings/apiSettings';
 
+const defaultHeaders = {
+    'Content-Type': 'application/json'
+};
 
-async function getAsync(path = '') {
+async function getAsync(path) {
     const requestUrl = `${BaseUrl}${path}`;
 
     try {
         const response = await fetch(requestUrl);
 
-        if(!response.ok){
+        if (!response.ok) {
             console.log(`Failed response: ${response.status}`);
 
             return null;
@@ -17,13 +20,37 @@ async function getAsync(path = '') {
     } catch (error) {
         console.error(`Error: ${error}`);
 
-        return null
-    }    
+        return null;
+    }
 }
 
+async function postAsync(path, body) {
+    const requestUrl = `${BaseUrl}${path}`;
+
+    try {
+        const response = await fetch(requestUrl, {
+            method: 'POST',
+            headers: defaultHeaders,
+            body: JSON.stringify(body)
+        });
+
+        if (!response.ok) {
+            console.log(`Failed response: ${response.status}`);
+
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error: ${error}`);
+
+        return null;
+    }
+}
 
 const functions = {
-    getAsync
+    getAsync,
+    postAsync
 }
 
 export default functions;
