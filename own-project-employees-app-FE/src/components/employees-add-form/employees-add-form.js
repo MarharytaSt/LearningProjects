@@ -32,12 +32,12 @@ class EmployeesAddForm extends Component {
             return;
         }
 
-        // this.props.onAdd(this.state.firstName, this.state.lastName, this.state.salary);
-        // this.setState({
-        //     firstName: '',
-        //     lastName: '',
-        //     salary: ''
-        // })
+        this.props.onAdd(this.state.firstName, this.state.lastName, this.state.salary);
+        this.setState({
+            firstName: '',
+            lastName: '',
+            salary: ''
+        })
     }
 
     render() {
