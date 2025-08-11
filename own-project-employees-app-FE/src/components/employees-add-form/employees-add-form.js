@@ -2,6 +2,7 @@ import { Component } from "react";
 import { EmployeesEndpoint } from '../../settings/apiSettings';
 import apiService from '../../services/apiService';
 import './employees-add-form.css';
+import validationFunctions from '../../services/validation';
 
 class EmployeesAddForm extends Component {
     constructor(props) {
@@ -22,16 +23,10 @@ class EmployeesAddForm extends Component {
     onSubmit = async (e) => {
         e.preventDefault();
 
-        const { firstName, lastName, salary } = this.state;
+        const validationResult = validationFunctions.validateEmployee(this.state);
 
-        if (firstName === '' || lastName === '') {
-            alert('Пожалуйста, заполните поля!');
-
-            return;
-        }
-
-        if (!salary || salary < 0) {
-            alert('Введите положительное число!');
+        if (!validationResult.isValid) {
+            alert(validationResult.errorMessage);
 
             return;
         }
@@ -42,19 +37,19 @@ class EmployeesAddForm extends Component {
             alert('Что-то пошло не так...');
 
             return;
-        } 
+        }
 
-        if(creationResponse.statusCode === 400){
+        if (creationResponse.statusCode === 400) {
             alert('Ошибка валидации на сервере.');
-            
+
             return;
         }
 
         this.setState({
-                firstName: '',
-                lastName: '',
-                salary: ''
-            });
+            firstName: '',
+            lastName: '',
+            salary: ''
+        });
 
         alert('Пользователь добавлен.');
 
