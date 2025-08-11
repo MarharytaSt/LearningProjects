@@ -37,10 +37,18 @@ async function postAsync(path, body) {
         if (!response.ok) {
             console.log(`Failed response: ${response.status}`);
 
-            return null;
+            return {
+                statusCode: response.status,
+                response: null
+            };
         }
 
-        return await response.json();
+        const responseObj = await response.json();
+        
+        return {
+            statusCode: response.status,
+            response: responseObj
+        };
     } catch (error) {
         console.error(`Error: ${error}`);
 

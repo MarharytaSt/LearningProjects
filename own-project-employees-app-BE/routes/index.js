@@ -3,6 +3,7 @@ import db from '../database/mongoClient.js';
 import { EmpolyeeDocument } from '../database/dbSettings.js';
 import { Employee } from '../models/employee.js';
 import repository from '../services/repository.js'
+import validation from '../services/validation.js';
 
 const router = express.Router();
 
@@ -20,6 +21,14 @@ router.post('/mongo/test', function (req, res, next) {
 
 // POST create new employee
 router.post('/employees', async (req, res) => {
+  const isValid = validation.validateEmployee(req.body);
+
+  if (!isValid) {
+    res.status(400).json('Data is invalid.');
+
+    return;
+  }
+
   await repository.createOne(req.body);
 
   res.status(200).json('Employee created.');

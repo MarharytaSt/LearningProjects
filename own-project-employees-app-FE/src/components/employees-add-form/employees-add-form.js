@@ -38,17 +38,25 @@ class EmployeesAddForm extends Component {
 
         const creationResponse = await apiService.postAsync(EmployeesEndpoint, this.state);
 
-        if (creationResponse) {
-            this.setState({
+        if (!creationResponse || creationResponse.statusCode === 500) {
+            alert('Что-то пошло не так...');
+
+            return;
+        } 
+
+        if(creationResponse.statusCode === 400){
+            alert('Ошибка валидации на сервере.');
+            
+            return;
+        }
+
+        this.setState({
                 firstName: '',
                 lastName: '',
                 salary: ''
             });
 
-            alert('Пользователь успешно добавлен.');
-        } else {
-            alert('Что-то пошло не так...');
-        }
+        alert('Пользователь добавлен.');
 
         return;
     }
