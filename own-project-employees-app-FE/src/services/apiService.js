@@ -44,7 +44,7 @@ async function postAsync(path, body) {
         }
 
         const responseObj = await response.json();
-        
+
         return {
             statusCode: response.status,
             response: responseObj
@@ -56,9 +56,32 @@ async function postAsync(path, body) {
     }
 }
 
+async function deleteAsync(path) {
+    const requestUrl = `${BaseUrl}${path}`;
+
+    try {
+        const response = await fetch(requestUrl, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            console.log(`Failed response: ${response.status}`);
+
+            return null;
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error: ${error}`);
+
+        return null;
+    }
+}
+
 const functions = {
     getAsync,
-    postAsync
+    postAsync,
+    deleteAsync
 }
 
 export default functions;

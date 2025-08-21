@@ -1,7 +1,7 @@
 import { Component } from "react";
 import EmployeesInfo from '../employees-info/employees-info';
 import EmployeesList from '../employees-list/employees-list';
-import { EmployeeAdded } from "../../settings/events";
+import { EmployeeChanged } from "../../settings/events";
 import eventService from "../../services/eventService";
 import apiService from '../../services/apiService';
 import { EmployeesEndpoint } from '../../settings/apiSettings';
@@ -22,11 +22,11 @@ class EmployeesBase extends Component {
 
     async componentDidMount() {
         await this.fetchEmployees();
-        eventService.on(EmployeeAdded, this.fetchEmployees);
+        eventService.on(EmployeeChanged, this.fetchEmployees);
     }
 
     componentWillUnmount() {
-        eventService.off(EmployeeAdded, this.fetchEmployees);
+        eventService.off(EmployeeChanged, this.fetchEmployees);
     }
 
     fetchEmployees = async () => {
