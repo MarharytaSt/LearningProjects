@@ -1,1 +1,1 @@
-export const EmployeeAdded = 'employeeAdded';
+export const EmployeeChanged = 'employeeChanged';

@@ -4,7 +4,7 @@ import apiService from '../../services/apiService';
 import './employees-add-form.css';
 import validationFunctions from '../../services/validation';
 import eventService from "../../services/eventService";
-import { EmployeeAdded } from '../../settings/events';
+import { EmployeeChanged } from '../../settings/events';
 
 class EmployeesAddForm extends Component {
     constructor(props) {
@@ -55,7 +55,7 @@ class EmployeesAddForm extends Component {
 
         alert('Пользователь добавлен.');
 
-        eventService.emit(EmployeeAdded);
+        eventService.emit(EmployeeChanged);
 
         return;
     }

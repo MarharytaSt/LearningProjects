@@ -1,9 +1,22 @@
 import { Component } from 'react';
 import './employees-list-item.css';
+import apiService from '../../services/apiService';
+import { EmployeesEndpoint } from '../../settings/apiSettings';
+import eventService from '../../services/eventService';
+import { EmployeeChanged } from '../../settings/events';
 
 class EmployeesListItem extends Component {
     constructor(props) {
         super(props);
+    }
+
+
+    deleteEmployee = async () => {
+        const { _id } = this.props.employee;
+
+        await apiService.deleteAsync(`${EmployeesEndpoint}/${_id}`);
+
+        eventService.emit(EmployeeChanged);
     }
 
     render() {
@@ -22,7 +35,8 @@ class EmployeesListItem extends Component {
                         <i className='fas fa-pen'></i>
                     </button>
                     <button type="button"
-                        className='btn btn-sm btn-outline-danger'>
+                        className='btn btn-sm btn-outline-danger'
+                        onClick={this.deleteEmployee}>
                         <i className='fas fa-trash'></i>
                     </button>
                 </div>
