@@ -36,6 +36,14 @@ router.post('/employees', async (req, res) => {
 
 // PUT update
 router.put('/employees/:id', async (req, res) => {
+  const isValid = validation.validateEmployee(req.body);
+
+  if (!isValid) {
+    res.status(400).json('Data is invalid.');
+
+    return;
+  }
+
   await repository.updateOne(req.params.id, req.body);
 
   res.status(200).json('Employee updated.');
@@ -58,7 +66,7 @@ router.get('/employees', async (req, res) => {
 // GET one employee
 router.get('/employees/:id', async (req, res) => {
   const employee = await repository.findOne(req.params.id);
-  
+
   res.json(employee);
 });
 

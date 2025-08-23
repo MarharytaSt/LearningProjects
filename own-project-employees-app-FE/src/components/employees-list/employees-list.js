@@ -8,11 +8,12 @@ class EmployeesList extends Component {
     }
 
     render() {
-        const { employees } = this.props;
+        const { employees, onEdit } = this.props;
         const elements = employees.map(item =>
             <EmployeesListItem
                 key={item._id}
-                employee={item} />);
+                employee={item}
+                onEdit={onEdit} />);
 
         return (
             <div>
