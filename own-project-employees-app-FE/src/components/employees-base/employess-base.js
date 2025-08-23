@@ -7,6 +7,8 @@ import apiService from '../../services/apiService';
 import { EmployeesEndpoint } from '../../settings/apiSettings';
 import SearchPanel from '../search-panel/search-panel';
 import EmployeesFilter from "../employees-filter/employees-filter";
+import EmployeesModal from "../employees-modal/employees-modal";
+
 
 
 class EmployeesBase extends Component {
@@ -16,7 +18,9 @@ class EmployeesBase extends Component {
         this.state = {
             employees: [],
             employeesCount: 0,
-            term: ''
+            term: '',
+            selectedEmployees: null,
+            isModalOpen: false
         };
     }
 
@@ -45,8 +49,45 @@ class EmployeesBase extends Component {
         this.setState({ filter });
     }
 
+    handleEdit = (employee) => {
+        this.setState({
+            selectedEmployees: employee,
+            isModalOpen: true
+        });
+    };
+
+    handleCloseModal = () => {
+        this.setState({ isModalOpen: false, selectedEmployees: null });
+    };
+
+    editEmployee = async (id, updatedEmployee) => {
+        const response = await apiService.putAsync(`${EmployeesEndpoint}/${id}`, updatedEmployee);
+
+        if (!response || response.statusCode === 500) {
+            alert('Что-то пошло не так...');
+
+            return;
+        }
+
+        if (response.statusCode === 400) {
+            alert('Ошибка валидации на сервере.');
+
+            return;
+        }
+
+        this.setState({
+            isModalOpen: false,
+            selectedEmployees: null
+        });
+
+        alert('Пользователь изменен.');
+
+        await this.fetchEmployees();
+    }
+
+
     render() {
-        const { employees, employeesCount, term, filter } = this.state;
+        const { employees, employeesCount, term, filter, selectedEmployees, isModalOpen } = this.state;
         let filteredEmployees = employees;
 
         if (term) {
@@ -64,7 +105,15 @@ class EmployeesBase extends Component {
                     <SearchPanel onUpdateSearch={this.onUpdateSearch} />
                     <EmployeesFilter onFilterSelect={this.onFilterSelect} />
                 </div>
-                <EmployeesList employees={filteredEmployees} />
+                <EmployeesList
+                    employees={filteredEmployees}
+                    onEdit={this.handleEdit} />
+                {isModalOpen && selectedEmployees && (
+                    <EmployeesModal
+                        employee={selectedEmployees}
+                        onClose={this.handleCloseModal}
+                        onSave={this.editEmployee} />
+                )}
             </>
         );
     }

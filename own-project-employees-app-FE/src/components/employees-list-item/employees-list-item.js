@@ -6,11 +6,6 @@ import eventService from '../../services/eventService';
 import { EmployeeChanged } from '../../settings/events';
 
 class EmployeesListItem extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-
     deleteEmployee = async () => {
         const { _id } = this.props.employee;
 
@@ -20,7 +15,8 @@ class EmployeesListItem extends Component {
     }
 
     render() {
-        const { firstName, lastName, salary } = this.props.employee;
+        const { employee, onEdit } = this.props;
+        const { firstName, lastName, salary } = employee;
 
         return (
             <li className='list-group-item d-flex justify-content-between'>
@@ -31,7 +27,8 @@ class EmployeesListItem extends Component {
 
                 <div className='d-flex justify-content-center align-items-center'>
                     <button type="button"
-                        className='btn btn-sm btn-outline-primary'>
+                        className='btn btn-sm btn-outline-primary'
+                        onClick={() => onEdit(employee)}>
                         <i className='fas fa-pen'></i>
                     </button>
                     <button type="button"

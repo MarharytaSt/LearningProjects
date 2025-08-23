@@ -1,0 +1,64 @@
+/* Полупрозрачный фон (бекдроп) */
+.modal-backdrop {
+  position: fixed;           /* фиксируем на экране */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* затемнение */
+  display: flex;             /* используем flex для центрирования модалки */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;             /* чтобы быть поверх остального контента */
+}
+
+/* Основная модалка */
+.my-modal {
+  background-color: #fff;    /* белый фон */
+  padding: 30px;
+  border-radius: 8px;
+  min-width: 300px;
+  max-width: 500px;
+  max-height: 60vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1001;             /* выше бекдропа */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Стили для инпутов */
+.modal input {
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Кнопки действий */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-actions button:first-child {
+  background-color: #3d5a80; /* Сохранить */
+  color: white;
+}
+
+.modal-actions button:last-child {
+  background-color: #ccc;     /* Закрыть */
+  color: black;
+}
