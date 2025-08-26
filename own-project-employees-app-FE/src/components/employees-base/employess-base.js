@@ -8,6 +8,8 @@ import { EmployeesEndpoint } from '../../settings/apiSettings';
 import SearchPanel from '../search-panel/search-panel';
 import EmployeesFilter from "../employees-filter/employees-filter";
 import EmployeesModal from "../employees-modal/employees-modal";
+import {PromotionFilter, MoreThan1000Filter} from "../../settings/filters";
+
 
 
 
@@ -85,17 +87,51 @@ class EmployeesBase extends Component {
         await this.fetchEmployees();
     }
 
+    handleTogglePromotion = async (id) => {
+        try {
+            const {_id, ...employee} = this.state.employees.find(e => e._id === id);
+
+            if (!employee) return;
+ 
+            const updated = { ...employee, promotion: !employee.promotion };
+            const result = await apiService.putAsync(`${EmployeesEndpoint}/${id}`, updated);
+
+            if (!result || result.statusCode !== 200) {
+                console.error('Toggle PUT failed', result);
+                return;
+            }
+
+            await this.fetchEmployees();
+        } catch (err) {
+            console.error('Error toggling promotion', err);
+        }
+    }
+
+
+    filterPost = (items, filter) => {
+        switch (filter) {
+            case PromotionFilter:
+                return items.filter(item => item.promotion);
+            case MoreThan1000Filter:
+                return items.filter(item => item.salary > 1000);
+            default:
+                return items;
+        }
+    }
+
 
     render() {
-        const { employees, employeesCount, term, filter, selectedEmployees, isModalOpen } = this.state;
-        let filteredEmployees = employees;
+        const { 
+            employees, 
+            employeesCount, 
+            term, 
+            filter, 
+            selectedEmployees, 
+            isModalOpen } = this.state;
+        let filteredEmployees = this.filterPost(employees, filter);
 
         if (term) {
-            filteredEmployees = filteredEmployees.filter(item => item.firstName.startsWith(term));
-        }
-
-        if (filter) {
-            filteredEmployees = filteredEmployees.filter(item => item.salary > 1000);
+            filteredEmployees = filteredEmployees.filter(item => item.firstName.toLowerCase().startsWith(term.toLowerCase()));
         }
 
         return (
@@ -107,7 +143,8 @@ class EmployeesBase extends Component {
                 </div>
                 <EmployeesList
                     employees={filteredEmployees}
-                    onEdit={this.handleEdit} />
+                    onEdit={this.handleEdit}
+                    onTogglePromotion={this.handleTogglePromotion} />
                 {isModalOpen && selectedEmployees && (
                     <EmployeesModal
                         employee={selectedEmployees}

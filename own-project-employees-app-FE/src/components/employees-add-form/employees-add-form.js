@@ -12,7 +12,8 @@ class EmployeesAddForm extends Component {
         this.state = {
             firstName: '',
             lastName: '',
-            salary: ''
+            salary: '',
+            promotion: false
         }
     }
 
@@ -50,7 +51,8 @@ class EmployeesAddForm extends Component {
         this.setState({
             firstName: '',
             lastName: '',
-            salary: ''
+            salary: '',
+            promotion: false
         });
 
         alert('Пользователь добавлен.');
@@ -61,7 +63,7 @@ class EmployeesAddForm extends Component {
     }
 
     render() {
-        const { firstName, lastName, salary } = this.state;
+        const { firstName, lastName, salary, } = this.state;
 
         return (
             <div className="app-add-form">
