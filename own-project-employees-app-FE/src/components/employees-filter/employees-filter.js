@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import './employees-filter.css';
+import {PromotionFilter, MoreThan1000Filter} from "../../settings/filters";
 
 class EmployeesFilter extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class EmployeesFilter extends Component {
         };
     }
 
-    onFitlerSelected = (filterName) => {
+    onFilterSelected = (filterName) => {
         this.props.onFilterSelect(filterName);
         this.setState({filter: filterName});
     }
@@ -17,7 +18,8 @@ class EmployeesFilter extends Component {
     render() {
         const buttonsData = [
             { name: '', label: 'Все сотрудники' },
-            { name: 'moreThen1000', label: 'З/П больше 1000$' }
+            { name: MoreThan1000Filter, label: 'З/П больше 1000$' },
+            {name: PromotionFilter, label: 'На повышение'}
         ];
 
         const {filter} = this.state;
@@ -29,7 +31,7 @@ class EmployeesFilter extends Component {
                 <button type="button"
                     className={`btn ${clazz}`}
                     key={index}
-                    onClick={() => this.onFitlerSelected(name)}>
+                    onClick={() => this.onFilterSelected(name)}>
                     {label}
                 </button>
             )

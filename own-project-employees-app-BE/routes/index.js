@@ -67,7 +67,7 @@ router.get('/employees', async (req, res) => {
 router.get('/employees/:id', async (req, res) => {
   const employee = await repository.findOne(req.params.id);
 
-  res.json(employee);
+    res.json(employee);
 });
 
 

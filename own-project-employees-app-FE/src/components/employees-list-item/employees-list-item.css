@@ -33,13 +33,24 @@
 }
 
 
-.list-group-item button {
+.list-group-item .btn {
     width: 35px;
     height: 35px;
     margin: 3px;
     font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
     cursor: pointer;
+}
+
+.list-group-item .btn-outline-warning i {
+    color: #ffc107;
+}
+
+.list-group-item .btn-warning i {
+    color: #fff;
 }
 
 
