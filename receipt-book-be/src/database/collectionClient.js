@@ -1,5 +1,5 @@
-import Database from './mongoClient';
-import { ReceiptsDocument } from './dbSettings';
+import Database from './mongoClient.js';
+import { ReceiptsDocument } from './dbSettings.js';
 
 let collection;
 
