@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { ConnectionString, DatabaseName } from './dbSettings';
+import { ConnectionString, DatabaseName } from './dbSettings.js';
 
 
 const client = new MongoClient(ConnectionString);
