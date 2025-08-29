@@ -1,23 +1,28 @@
 import './app.css';
-import apiServices from '../../services/apiServices';
 import { Component } from 'react';
+import MainPage from '../main-page/main-page';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import AddReceiptPage from '../add-receipt-page/add-receipt-page';
+import {MainPageRoute, AddReceiptPageRoute} from '../../settings/appRoutes';
+
 
 
 class App extends Component {
 
-  test = async () => {
 
-    const response = await apiServices.getAsync('/');
-
-    console.log(response);
-    
-  }
 
 
   render() {
     return (
       <div className="App">
-        <button onClick={this.test}>Test</button>
+        <Router>
+          <Routes>
+            <Route path={MainPageRoute} element={<MainPage/>}/>
+            <Route path={AddReceiptPageRoute} element={<AddReceiptPage/>}/>
+
+          </Routes>
+        </Router>
+
       </div>
     );
   }
