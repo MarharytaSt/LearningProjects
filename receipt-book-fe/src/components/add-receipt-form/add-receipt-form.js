@@ -2,6 +2,7 @@ import { Component } from "react";
 import Input from '../../shared-components/input/input';
 import ReceiptStep from '../../shared-components/receipt-step/receipt-step';
 import ActionsButton from '../../shared-components/actions-button/actions-button';
+import {withRouter} from '../../shared-components/utils/withRouter.js';
 
 
 
@@ -17,11 +18,45 @@ class AddReceiptForm extends Component {
         };
 
         this.generateStepComponents();
+        this.props.navigate('/');
     }
 
-    createReceipt = () => {
-        console.log("receipt: ", this.state);
+    createReceipt = async () => {
+        const {receipt} = this.state;
 
+        const formattedReceipt = {
+            name: receipt.name,
+            cookingDuration: Number(receipt.cookingDuration),
+            description: {
+                shortDescription: receipt.description,
+                steps: receipt.steps.map((step, index) => ({
+                    stepOrder: index,
+                    stepDescription: step.stepDescription || ''
+                }))
+            }
+        };
+
+        try {
+            const response = await fetch('http://localhost:5000/mongo/test', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formattedReceipt)
+            });
+
+            if(!response.ok) {
+                throw new Error('Ошибка при сохранении рецепта');
+            }
+
+            const result = await response.json();
+            alert('Рецепт успешно сохранен!', result);
+            this.resetForm();
+            this.props.navigate('/');
+        } catch (error) {
+            alert('Ошибка при сохранении рецепта.Попробуйте еще раз.');
+            console.error('Ошибка', error);
+        }
     }
 
     setFormData = (propName, propValue) => {
@@ -35,7 +70,7 @@ class AddReceiptForm extends Component {
 
     setStepData = (stepIndex, propName, propValue) => {
         const { receipt } = this.state;
-
+ 
         if (!receipt.steps[stepIndex]) {
             const stepObj = {
                 [propName]: propValue
@@ -92,6 +127,22 @@ class AddReceiptForm extends Component {
         });
     }
 
+    resetForm = () => {
+        this.setState({
+            receipt: {
+                name: '',
+                cookingDuration: 0,
+                description: '',
+                steps: []
+            },
+            stepCount: 1,
+            stepComponents: []
+        }, () => {
+            this.generateStepComponents();
+            this.props.navigate('/');
+        });
+    }
+
     render() {
         console.log(this.state.receipt);
         const { stepComponents } = this.state;
@@ -103,17 +154,20 @@ class AddReceiptForm extends Component {
                         name="name"
                         type="text"
                         placeholder="Название рецепта"
-                        setFormData={this.setFormData} />
+                        setFormData={this.setFormData}
+                        value={this.state.receipt.name || ''} />
                     <Input
                         name="cookingDuration"
                         type="number"
                         placeholder="Время приготовления"
-                        setFormData={this.setFormData} />
+                        setFormData={this.setFormData} 
+                        value={this.state.receipt.cookingDuration} />
                     <Input
                         name="description"
                         type="text"
                         placeholder="Краткое описание рецепта"
-                        setFormData={this.setFormData} />
+                        setFormData={this.setFormData} 
+                        value={this.state.receipt.description || ''} />
                 </div>
                 <div>
                     {stepComponents}
@@ -124,7 +178,8 @@ class AddReceiptForm extends Component {
                         clickHandler={this.addStep} />
                 </div>
                 <div>
-                    <ActionsButton btnContent="Отмена" />
+                    <ActionsButton btnContent="Отмена" 
+                    clickHandler={this.resetForm} />
                     <ActionsButton btnContent="Сохранить"
                         clickHandler={this.createReceipt} />
                 </div>
@@ -136,4 +191,4 @@ class AddReceiptForm extends Component {
 }
 
 
-export default AddReceiptForm;
+export default withRouter(AddReceiptForm);
