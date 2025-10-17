@@ -3,6 +3,7 @@ import Input from '../../shared-components/input/input';
 import ReceiptStep from '../../shared-components/receipt-step/receipt-step';
 import ActionsButton from '../../shared-components/actions-button/actions-button';
 import {withRouter} from '../../shared-components/utils/withRouter.js';
+import { postReceipt } from "../../api/receiptsApi.js";
 
 
 
@@ -22,42 +23,17 @@ class AddReceiptForm extends Component {
     }
 
     createReceipt = async () => {
-        const {receipt} = this.state;
-
-        const formattedReceipt = {
-            name: receipt.name,
-            cookingDuration: Number(receipt.cookingDuration),
-            description: {
-                shortDescription: receipt.description,
-                steps: receipt.steps.map((step, index) => ({
-                    stepOrder: index,
-                    stepDescription: step.stepDescription || ''
-                }))
-            }
-        };
-
         try {
-            const response = await fetch('http://localhost:5000/mongo/test', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formattedReceipt)
-            });
-
-            if(!response.ok) {
-                throw new Error('Ошибка при сохранении рецепта');
-            }
-
-            const result = await response.json();
-            alert('Рецепт успешно сохранен!', result);
+            await postReceipt(this.state.receipt);
+            alert('Рецепт успешно сохранен!');
             this.resetForm();
             this.props.navigate('/');
         } catch (error) {
-            alert('Ошибка при сохранении рецепта.Попробуйте еще раз.');
-            console.error('Ошибка', error);
-        }
+            alert(error.message);
+            console.error(error);
+        }   
     }
+
 
     setFormData = (propName, propValue) => {
         this.setState({
