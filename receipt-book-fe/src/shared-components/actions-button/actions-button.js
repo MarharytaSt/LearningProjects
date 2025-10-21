@@ -1,4 +1,5 @@
 import { Component } from "react";
+import './actions-button.css';
 
 
 
@@ -7,12 +8,12 @@ import { Component } from "react";
 class ActionsButton extends Component{
 
     render(){
-        const {btnContent, clickHandler} = this.props
+        const {btnContent, clickHandler, className = ''} = this.props
 
         return(
             <div>
                 <button
-                onClick={clickHandler}>{btnContent}</button>
+                onClick={clickHandler} className={`actions-button ${className}`}>{btnContent}</button>
             </div>
         )
     }

@@ -4,6 +4,7 @@ import ReceiptStep from '../../shared-components/receipt-step/receipt-step';
 import ActionsButton from '../../shared-components/actions-button/actions-button';
 import {withRouter} from '../../shared-components/utils/withRouter.js';
 import { postReceipt } from "../../api/receiptsApi.js";
+import './add-receipt-form.css';
 
 
 
@@ -23,6 +24,24 @@ class AddReceiptForm extends Component {
     }
 
     createReceipt = async () => {
+        const {name, cookingDuration, description, steps} = this.state.receipt;
+
+        if(!name || name.trim() === ''){
+            return alert("Введите название рецепта!");
+        }
+
+        if(!cookingDuration || cookingDuration <= 0){
+            return alert("Укажите время приготовления!");
+        }
+
+        if(!description || description === ''){
+            return alert("Добавьте краткое описание!");
+        }
+
+        if(!steps || steps.length === 0 || !steps[0].stepDescription){
+            return alert("Добавьте хотя бы один шаг!");
+        }
+
         try {
             await postReceipt(this.state.receipt);
             alert('Рецепт успешно сохранен!');
@@ -92,6 +111,7 @@ class AddReceiptForm extends Component {
         const { stepComponents, stepCount } = this.state;
         const updatedStepCount = stepCount - 1;
 
+        if(stepIndex === 0)return;
         if (updatedStepCount === 0) {
             return;
         }
@@ -124,14 +144,15 @@ class AddReceiptForm extends Component {
         const { stepComponents } = this.state;
 
         return (
-            <div>
-                <div>
+            <div className="receipt-form">
+                <div className="input-group">
                     <Input
                         name="name"
                         type="text"
                         placeholder="Название рецепта"
                         setFormData={this.setFormData}
-                        value={this.state.receipt.name || ''} />
+                        value={this.state.receipt.name || ''}
+                        min={0} />
                     <Input
                         name="cookingDuration"
                         type="number"
@@ -145,19 +166,22 @@ class AddReceiptForm extends Component {
                         setFormData={this.setFormData} 
                         value={this.state.receipt.description || ''} />
                 </div>
-                <div>
+                <div className="steps-section">
                     {stepComponents}
                 </div>
-                <div>
+                <div className="add-step-button">
                     <ActionsButton
                         btnContent="Добавить шаг"
-                        clickHandler={this.addStep} />
+                        clickHandler={this.addStep}
+                        className="add-step" />
                 </div>
-                <div>
+                <div className="form-actions">
                     <ActionsButton btnContent="Отмена" 
-                    clickHandler={this.resetForm} />
+                    clickHandler={this.resetForm}
+                    className="cancel" />
                     <ActionsButton btnContent="Сохранить"
-                        clickHandler={this.createReceipt} />
+                        clickHandler={this.createReceipt}
+                        className="safe" />
                 </div>
 
 

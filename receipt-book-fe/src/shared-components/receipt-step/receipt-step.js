@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Input from '../../shared-components/input/input';
 import ActionsButton from "../actions-button/actions-button";
+import './receipt-step.css';
 
 
 
