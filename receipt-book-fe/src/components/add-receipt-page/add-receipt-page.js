@@ -1,6 +1,9 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import {MainPageRoute} from '../../settings/appRoutes';
+import AddReceiptPageHeader from '../header/header';
+import AddReceiptForm from '../add-receipt-form/add-receipt-form';
+import './add-receipt-page.css';
 
 
 class AddReceiptPage extends Component{
@@ -8,10 +11,15 @@ class AddReceiptPage extends Component{
 
     render(){
         return(
-            <div>
-                Add Receipt Page
-                <div>
-                    <Link to={MainPageRoute}>Go back to Main Page</Link>
+            <div className="add-receipt-page">
+                <AddReceiptPageHeader header="Добавление нового рецепта"/>
+                <div className="form-wrapper">
+                    <AddReceiptForm/>
+                </div>
+                <div className="back-link">
+                    <Link to={MainPageRoute} className="link-button">
+                    Вернуться на главную
+                    </Link>
                 </div>
             </div>
         )

@@ -1,0 +1,47 @@
+.actions-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: #5c377c;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.actions-button:hover {
+    background-color: #8859b0;
+    transform: translateY(-2px);
+}
+
+.actions-button:active {
+    background-color: #37303c;
+    transform: translateY(0);
+}
+
+.actions-button.cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.actions-button.cancel:hover {
+    background-color: #b3b3b3;
+}
+
+.actions-button.add-step {
+    background-color: #a24194;
+}
+
+.actions-button.add-step:hover {
+    background-color: #da75ca;
+}
+
+.actions-button.safe {
+    background-color: #a24194;
+}
+
+.actions-button.safe:hover {
+    background-color: #da75ca;
+}

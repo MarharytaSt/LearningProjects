@@ -1,0 +1,41 @@
+.add-receipt-page {
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: "Segoe UI", sans-serif;
+    text-align: center;
+    font-size: 28px;
+    color: #5c377c;
+    margin-bottom: 30px;
+}
+
+.form-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+.back-link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.link-button {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 18px;
+    background-color: #5c377c;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.link-button:hover {
+    background-color: #8859b0;
+}

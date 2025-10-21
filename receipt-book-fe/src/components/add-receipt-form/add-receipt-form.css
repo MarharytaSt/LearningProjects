@@ -1,0 +1,35 @@
+.receipt-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+.steps-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.add-step-button {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.form-actions button {
+    flex: 1;
+    margin: 0 8px;
+}
