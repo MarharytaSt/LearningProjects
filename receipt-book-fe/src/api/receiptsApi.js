@@ -28,3 +28,18 @@ export async function postReceipt(receipt) {
 
     return await response.json();
 }
+
+export async function getReceipts() {
+    const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Ошибка при загрузке рецептов');
+    }
+    
+    return await response.json();
+}

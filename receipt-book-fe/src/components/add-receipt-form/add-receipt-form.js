@@ -20,8 +20,9 @@ class AddReceiptForm extends Component {
         };
 
         this.generateStepComponents();
-        this.props.navigate('/');
     }
+
+    
 
     createReceipt = async () => {
         const {name, cookingDuration, description, steps} = this.state.receipt;
@@ -50,7 +51,7 @@ class AddReceiptForm extends Component {
         } catch (error) {
             alert(error.message);
             console.error(error);
-        }   
+        }  
     }
 
 
@@ -140,7 +141,6 @@ class AddReceiptForm extends Component {
     }
 
     render() {
-        console.log(this.state.receipt);
         const { stepComponents } = this.state;
 
         return (
