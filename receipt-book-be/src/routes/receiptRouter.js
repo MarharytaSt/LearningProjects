@@ -12,12 +12,9 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    try {
-        const allReceipts = await repositoryService.findAllAsync();
-        res.status(200).json(allReceipts);
-    } catch (error) {
-        res.status(500).json({message: 'Ошибка при получении рецептов', error});
-    }
+    const allReceipts = await repositoryService.findAllAsync();
+    
+    res.status(200).json(allReceipts);
 });
 
 

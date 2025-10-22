@@ -1,12 +1,12 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
-import {AddReceiptPageRoute} from '../../settings/appRoutes';
-import {getReceipts} from '../../api/receiptsApi';
+import { AddReceiptPageRoute } from '../../settings/appRoutes';
+import { getReceipts } from '../../api/receiptsApi';
 import './main-page.css';
 
 
 
-class MainPage extends Component{
+class MainPage extends Component {
     state = {
         recipes: []
     };
@@ -16,42 +16,42 @@ class MainPage extends Component{
 
             const recipes = await getReceipts();
             const sorted = [...recipes].reverse();
-            this.setState({recipes: sorted});
-            
+            this.setState({ recipes: sorted });
+
         } catch (error) {
             console.error("Ошибка загрузки рецептов", error.message);
         }
     }
 
 
-     formatMinutes = (n) => {
+    formatMinutes = (n) => {
 
         const lastDigit = n % 10;
         const lastTwoDigit = n % 100;
 
-        if(lastTwoDigit >= 11 && lastDigit <= 14) {
+        if (lastTwoDigit >= 11 && lastDigit <= 14) {
             return `${n} минут`;
         }
 
-        if(lastDigit === 1) {
+        if (lastDigit === 1) {
             return `${n} минута`;
         }
 
-        if(lastDigit >= 2 && lastDigit <= 4) {
+        if (lastDigit >= 2 && lastDigit <= 4) {
             return `${n} минуты`;
         }
 
         return `${n} минут`;
     };
-   
 
-    render(){
-        return(
+
+    render() {
+        return (
             <div className="main-page">
                 <h1 className="main-title">Мои рецепты</h1>
                 <div className="action-section">
                     <Link to={AddReceiptPageRoute} className="add-button">
-                    Добавить рецепт
+                        Добавить рецепт
                     </Link>
                 </div>
                 <div className="recipe-list">
@@ -59,7 +59,10 @@ class MainPage extends Component{
                         <div key={index} className="recipe-card">
                             <h3 className="recipe-header">{recipe.name}</h3>
                             <p className="recipe-time">Время приготовления: {this.formatMinutes(recipe.cookingDuration)}</p>
-                            <p className="recipe-descr">{recipe.description?.shortDescription}</p>
+                            {
+                                recipe.description?.shortDescription
+                                && <p className="recipe-descr">{recipe.description.shortDescription}</p>
+                            }
                         </div>
                     ))}
                 </div>
