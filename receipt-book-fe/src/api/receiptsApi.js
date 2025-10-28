@@ -43,3 +43,20 @@ export async function getReceipts() {
     
     return await response.json();
 }
+
+
+export async function getReceiptById(id) {
+    const response = await fetch(`${API_URL}/${id}` , {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Ошибка при загрузке рецепта')
+    }
+
+    return await response.json();
+
+}

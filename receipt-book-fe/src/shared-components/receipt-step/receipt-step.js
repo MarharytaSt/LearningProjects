@@ -5,8 +5,6 @@ import './receipt-step.css';
 
 
 
-
-
 class ReceiptStep extends Component {
 
     packStepData = (propName, propValue) => {

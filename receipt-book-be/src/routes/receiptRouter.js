@@ -17,5 +17,12 @@ router.get('/', async (req, res) => {
     res.status(200).json(allReceipts);
 });
 
+router.get('/:id', async (req,res) => {
+    const {id} = req.params;
+    const oneReceipt = await repositoryService.findOneAsync(id);
+
+    res.status(200).json(oneReceipt);
+})
+
 
 export default router;

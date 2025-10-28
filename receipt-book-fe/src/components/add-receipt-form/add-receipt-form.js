@@ -136,7 +136,7 @@ class AddReceiptForm extends Component {
             stepComponents: []
         }, () => {
             this.generateStepComponents();
-            this.props.navigate('/');
+            this.props.router.navigate('/');
         });
     }
 

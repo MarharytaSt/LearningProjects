@@ -31,11 +31,13 @@
     background-color: #5c377c;
     color: white;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 500;
     transition: background-color 0.3s ease;
+   
 }
 
 .link-button:hover {
     background-color: #8859b0;
+    transform: translateY(-2px);
 }

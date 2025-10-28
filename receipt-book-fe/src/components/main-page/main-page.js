@@ -2,6 +2,7 @@ import { Component } from "react";
 import { Link } from "react-router-dom";
 import { AddReceiptPageRoute } from '../../settings/appRoutes';
 import { getReceipts } from '../../api/receiptsApi';
+import { withRouter } from "../../shared-components/utils/withRouter";
 import './main-page.css';
 
 
@@ -56,7 +57,7 @@ class MainPage extends Component {
                 </div>
                 <div className="recipe-list">
                     {this.state.recipes.map((recipe, index) => (
-                        <div key={index} className="recipe-card">
+                        <div key={index} className="recipe-card" onClick={() => this.props.router.navigate(`/edit-receipt/${recipe._id}`)}>
                             <h3 className="recipe-header">{recipe.name}</h3>
                             <p className="recipe-time">Время приготовления: {this.formatMinutes(recipe.cookingDuration)}</p>
                             {
@@ -71,8 +72,7 @@ class MainPage extends Component {
     }
 }
 
-export default MainPage;
+export default withRouter(MainPage);
 
 
-// 1 - a;
-// 2,3,4
+
