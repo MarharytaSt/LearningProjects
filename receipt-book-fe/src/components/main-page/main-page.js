@@ -50,6 +50,7 @@ class MainPage extends Component {
         return (
             <div className="main-page">
                 <h1 className="main-title">Мои рецепты</h1>
+                <h2 className="main-info">Общее количество рецептов: {this.state.recipes.length}</h2>
                 <div className="action-section">
                     <Link to={AddReceiptPageRoute} className="add-button">
                         Добавить рецепт

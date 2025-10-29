@@ -47,7 +47,7 @@ class AddReceiptForm extends Component {
             await postReceipt(this.state.receipt);
             alert('Рецепт успешно сохранен!');
             this.resetForm();
-            this.props.navigate('/');
+            this.props.router.navigate('/');
         } catch (error) {
             alert(error.message);
             console.error(error);
@@ -101,12 +101,11 @@ class AddReceiptForm extends Component {
     }
 
     addStep = () => {
-        const { stepCount } = this.state;
-        this.setState({
-            stepCount: stepCount + 1
-        });
-        this.generateStepComponents();
-    }
+        this.setState(
+            {stepCount: this.state.stepCount + 1},
+            () => this.generateStepComponents()
+        );
+    };
 
     deleteStep = (stepIndex) => {
         const { stepComponents, stepCount } = this.state;

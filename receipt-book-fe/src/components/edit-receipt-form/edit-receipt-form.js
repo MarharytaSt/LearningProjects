@@ -10,9 +10,9 @@ class EditReceiptForm extends Component{
         return(
             <div>
                 <div className="form-info">
-                    <p>Название рецепта: {recipe.name}</p>
-                    <p>Время приготовления: {recipe.cookingDuration} минут</p>
-                    <p>Краткое описание: {recipe.description.shortDescription}</p>
+                    <p><span className="form-label">Название рецепта:</span> {recipe.name}</p>
+                    <p><span className="form-label">Время приготовления:</span> {recipe.cookingDuration} минут</p>
+                    <p><span className="form-label">Краткое описание:</span> {recipe.description.shortDescription}</p>
                 </div>
                 <div className="form-steps">
                     <p>{recipe.description.steps.map((step, index) => (
