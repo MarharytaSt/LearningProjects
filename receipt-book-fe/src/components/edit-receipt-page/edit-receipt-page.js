@@ -1,65 +1,79 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "../../shared-components/utils/withRouter";
-import {MainPageRoute} from '../../settings/appRoutes';
+import { MainPageRoute } from '../../settings/appRoutes';
 import EditReceiptPageHeader from '../edit-receipt-page-header/edit-receipt-page-header';
 import EditReceiptForm from '../edit-receipt-form/edit-receipt-form';
-import {getReceiptById} from '../../api/receiptsApi';
+import { getReceiptById } from '../../api/receiptsApi';
+import { deleteReceiptById } from '../../api/receiptsApi';
 import ActionsButton from '../../shared-components/actions-button/actions-button';
 import './edit-receipt-page.css';
 
 
 
-class EditReceiptPage extends Component{
+class EditReceiptPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        recipe: null
-    };
-        
+            recipe: null
+        };
+
     }
-    
+
 
     async componentDidMount() {
-        const {id} = this.props.router.params;
+        const { id } = this.props.router.params;
         try {
             const recipe = await getReceiptById(id);
-            this.setState({recipe});
+            this.setState({ recipe });
         } catch (error) {
             console.error('Ошибка при загрузке рецепта', error.message);
         }
-        
+
     }
-    
 
-    render(){
-        const {recipe} = this.state;
-        if(!recipe) return <p>Загрузка...</p> 
+    deleteReceipt = async () => {
+        const { id } = this.props.router.params;
 
-        const {id} = this.props.router.params;
+        try {
+            const status = await deleteReceiptById(id);
+            if (status === 200 || status === 204) {
+                this.props.router.navigate(MainPageRoute);
+            }
+        } catch (error) {
+            console.error('Ошибка при удалении рецепта', error.message);
+        }
+    };
 
-        return(
+
+    render() {
+        const { recipe } = this.state;
+        if (!recipe) return <p>Загрузка...</p>
+
+        const { id } = this.props.router.params;
+
+        return (
             <div>
-                {recipe && <EditReceiptPageHeader header={`Рецепт блюда: ${recipe.name}`}/>}
+                {recipe && <EditReceiptPageHeader header={`Рецепт блюда: ${recipe.name}`} />}
                 <div className="page-wrapper">
-                    <EditReceiptForm 
-                    recipe={recipe}
-                    steps={recipe.steps}
-                    receiptId={id}/>
+                    <EditReceiptForm
+                        recipe={recipe}
+                        steps={recipe.steps}
+                        receiptId={id} />
                 </div>
                 <div className="page-btns">
                     <Link to={MainPageRoute} className="link-button">
-                    Назад
+                        Назад
                     </Link>
-                    <ActionsButton btnContent="Редактировать" 
-                    // clickHandler={}
-                    className="edited" />
+                    <ActionsButton btnContent="Редактировать"
+                        // clickHandler={}
+                        className="edited" />
                     <ActionsButton btnContent="Удалить"
-                    // clickHandler={}
-                    className="remove" />
+                        clickHandler={this.deleteReceipt}
+                        className="remove" />
                 </div>
             </div>
-            
+
         )
     }
 }
