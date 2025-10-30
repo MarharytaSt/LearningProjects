@@ -55,3 +55,16 @@ export async function getReceiptById(id) {
     return await response.json();
 
 }
+
+export async function deleteReceiptById(id) {
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE',
+        headers: headers
+    });
+
+    if (!response.ok) {
+        throw new Error('Ошибка при удалении рецепта')
+    }
+
+    return response.status;
+}

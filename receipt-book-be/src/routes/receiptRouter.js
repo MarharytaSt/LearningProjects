@@ -13,16 +13,23 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     const allReceipts = await repositoryService.findAllAsync();
-    
+
     res.status(200).json(allReceipts);
 });
 
-router.get('/:id', async (req,res) => {
-    const {id} = req.params;
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
     const oneReceipt = await repositoryService.findOneAsync(id);
 
     res.status(200).json(oneReceipt);
-})
+});
+
+router.delete('/:id', async(req, res) => {
+    const {id} = req.params;
+    await repositoryService.deleteOneAsync(id);
+
+    res.sendStatus(204);
+});
 
 
 export default router;
