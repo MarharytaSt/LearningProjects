@@ -68,3 +68,21 @@ export async function deleteReceiptById(id) {
 
     return response.status;
 }
+
+
+export async function updateReceiptById(id, updateReceipt) {
+    const {_id, ...cleanedReceipt} = updateReceipt;
+    console.log('Отправляем на сервер:', cleanedReceipt);
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify(cleanedReceipt)
+    });
+
+    if(!response.ok) {
+        const error = await response.json();
+        throw new Error('Ошибка при обновлении рецепта', error.message);
+    }
+
+    return await response.json();
+}
