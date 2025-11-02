@@ -5,6 +5,7 @@ import { MainPageRoute } from '../../settings/appRoutes';
 import EditReceiptPageHeader from '../edit-receipt-page-header/edit-receipt-page-header';
 import EditReceiptForm from '../edit-receipt-form/edit-receipt-form';
 import { getReceiptById } from '../../api/receiptsApi';
+import { updateReceiptById } from '../../api/receiptsApi';
 import { deleteReceiptById } from '../../api/receiptsApi';
 import ActionsButton from '../../shared-components/actions-button/actions-button';
 import './edit-receipt-page.css';
@@ -15,7 +16,10 @@ class EditReceiptPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            recipe: null
+            recipe: null,
+            isEditing: false,
+            editedRecipe: null
+
         };
 
     }
@@ -45,6 +49,54 @@ class EditReceiptPage extends Component {
         }
     };
 
+    handleEditClick = () => {
+        this.setState({
+            isEditing: true,
+            editedRecipe: JSON.parse(JSON.stringify(this.state.recipe))
+        });
+    };
+
+    handleCancel = () => {
+        this.setState({
+            isEditing: false,
+            editedRecipe: null
+        });
+    };
+
+    handleSave = async () => {
+        const { id } = this.props.router.params;
+        const { editedRecipe } = this.state;
+        const { name, cookingDuration, description } = editedRecipe;
+
+        const hasEmptyFields =
+            !name.trim() ||
+            !description?.shortDescription?.trim() ||
+            !cookingDuration 
+
+        const stepsValid = 
+        Array.isArray(description?.steps) &&
+        description.steps.length > 0 &&
+        description.steps.every(
+            step => step && typeof step.stepDescription === 'string' &&
+            step.stepDescription.trim() !== ''
+        );
+
+        if (hasEmptyFields || !stepsValid) {
+            return alert("Пожалуйста, заполните все поля!");
+        }
+
+        try {
+            await updateReceiptById(id, this.state.editedRecipe);
+            this.setState({
+                recipe: this.state.editedRecipe,
+                editedRecipe: null,
+                isEditing: false
+            });
+        } catch (error) {
+            console.error('Ошибка при сохранении рецепта', error.message);
+        }
+    };
+
 
     render() {
         const { recipe } = this.state;
@@ -59,14 +111,20 @@ class EditReceiptPage extends Component {
                     <EditReceiptForm
                         recipe={recipe}
                         steps={recipe.steps}
-                        receiptId={id} />
+                        receiptId={id}
+                        isEditing={this.state.isEditing}
+                        editedRecipe={this.state.editedRecipe}
+                        onSave={this.handleSave}
+                        onCancel={this.handleCancel}
+                        onChangeEditedRecipe={(updated) => this.setState({ editedRecipe: updated })}
+                    />
                 </div>
                 <div className="page-btns">
                     <Link to={MainPageRoute} className="link-button">
                         Назад
                     </Link>
                     <ActionsButton btnContent="Редактировать"
-                        // clickHandler={}
+                        clickHandler={this.handleEditClick}
                         className="edited" />
                     <ActionsButton btnContent="Удалить"
                         clickHandler={this.deleteReceipt}
