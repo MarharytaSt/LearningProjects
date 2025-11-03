@@ -3,13 +3,16 @@ import { Link } from "react-router-dom";
 import { AddReceiptPageRoute } from '../../settings/appRoutes';
 import { getReceipts } from '../../api/receiptsApi';
 import { withRouter } from "../../shared-components/utils/withRouter";
+import RecipeFilter from '../recipe-filter/recipe-filter';
 import './main-page.css';
 
 
 
 class MainPage extends Component {
     state = {
-        recipes: []
+        recipes: [],
+        filter: '',
+        subFilter: ''
     };
 
     async componentDidMount() {
@@ -46,18 +49,55 @@ class MainPage extends Component {
     };
 
 
+
+    onFilterSelect = (filter, subFilter) => {
+        this.setState({ filter, subFilter });
+    }
+
+
+
+
+
     render() {
+
+        const { recipes, filter, subFilter } = this.state;
+       
+
+        const filterPost = (items, filter, subFilter) => {
+            switch (filter) {
+                case 'CookingDurationFilter':
+                    if (subFilter === 'lessThanHour') return items.filter(item => item.cookingDuration < 60);
+                    if (subFilter === 'moreThanHour') return items.filter(item => item.cookingDuration >= 60);
+                    return items;
+                case 'StepsFilter':
+                    if (subFilter === '1step') return items.filter(item => item.description.steps.length === 1);
+                    if (subFilter === '2step') return items.filter(item => item.description.steps.length === 2);
+                    if (subFilter === '3stepAndMore') return items.filter(item => item.description.steps.length >= 3);
+                    return items;
+                default:
+                    return items;
+            }
+        }
+
+
+         const filteredRecipes = filterPost(recipes, filter, subFilter);
+
+
+
         return (
             <div className="main-page">
                 <h1 className="main-title">Мои рецепты</h1>
                 <h2 className="main-info">Общее количество рецептов: {this.state.recipes.length}</h2>
+                <div className="main-filter">
+                    <RecipeFilter onFilterSelect={this.onFilterSelect} />
+                </div>
                 <div className="action-section">
                     <Link to={AddReceiptPageRoute} className="add-button">
                         Добавить рецепт
                     </Link>
                 </div>
                 <div className="recipe-list">
-                    {this.state.recipes.map((recipe, index) => (
+                    {filteredRecipes.map((recipe, index) => (
                         <div key={index} className="recipe-card" onClick={() => this.props.router.navigate(`/edit-receipt/${recipe._id}`)}>
                             <h3 className="recipe-header">{recipe.name}</h3>
                             <p className="recipe-time">Время приготовления: {this.formatMinutes(recipe.cookingDuration)}</p>
