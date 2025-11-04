@@ -78,3 +78,16 @@
     font-size: 18px;
     color: rgb(73, 68, 79);
 }
+
+
+.fa-heart {
+    font-size: 20px;
+    color: #e52e21;
+    cursor: pointer;
+    margin-left: 200px;
+    transition: color 0.3s ease;
+}
+
+.fa-heart:hover {
+    color: #ff6b6b;
+}

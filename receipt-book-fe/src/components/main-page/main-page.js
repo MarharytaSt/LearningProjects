@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import { AddReceiptPageRoute } from '../../settings/appRoutes';
-import { getReceipts } from '../../api/receiptsApi';
+import { getReceipts, updateReceiptById } from '../../api/receiptsApi';
 import { withRouter } from "../../shared-components/utils/withRouter";
 import RecipeFilter from '../recipe-filter/recipe-filter';
 import './main-page.css';
@@ -12,7 +12,9 @@ class MainPage extends Component {
     state = {
         recipes: [],
         filter: '',
-        subFilter: ''
+        subFilter: '',
+        favorites: [],
+        isFavorite: false
     };
 
     async componentDidMount() {
@@ -55,13 +57,33 @@ class MainPage extends Component {
     }
 
 
+    toggleFavorite = async (recipe) => {
+        try {
+            const updated = {...recipe, isFavorite: !recipe.isFavorite};
+            await updateReceiptById(recipe._id, updated);
 
+            this.setState(({recipes}) => ({
+                recipes: recipes.map(r => r._id === recipe._id ? updated : r)
+            }));
+        } catch (error) {
+            console.error("Ошибка при обновлении избранного", error);
+        }
+    };
+
+    // toggleFavorite = (id) => {
+    //     this.setState(({ favorites }) => ({
+    //         favorites: favorites.includes(id)
+    //             ? favorites.filter(favId => favId !== id)
+    //             : [...favorites, id]
+    //     }));
+    // }
 
 
     render() {
 
         const { recipes, filter, subFilter } = this.state;
-       
+
+
 
         const filterPost = (items, filter, subFilter) => {
             switch (filter) {
@@ -80,14 +102,14 @@ class MainPage extends Component {
         }
 
 
-         const filteredRecipes = filterPost(recipes, filter, subFilter);
+        const filteredRecipes = filterPost(recipes, filter, subFilter);
 
 
 
         return (
             <div className="main-page">
                 <h1 className="main-title">Мои рецепты</h1>
-                <h2 className="main-info">Общее количество рецептов: {this.state.recipes.length}</h2>
+                <h2 className="main-info">Общее количество рецептов: {recipes.length}</h2>
                 <div className="main-filter">
                     <RecipeFilter onFilterSelect={this.onFilterSelect} />
                 </div>
@@ -98,7 +120,17 @@ class MainPage extends Component {
                 </div>
                 <div className="recipe-list">
                     {filteredRecipes.map((recipe, index) => (
-                        <div key={index} className="recipe-card" onClick={() => this.props.router.navigate(`/edit-receipt/${recipe._id}`)}>
+                        <div
+                            key={index}
+                            className="recipe-card"
+                            onClick={() => this.props.router.navigate(`/edit-receipt/${recipe._id}`)}
+                            >
+                            <i className={recipe.isFavorite ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    this.toggleFavorite(recipe);
+                                }}
+                            ></i>
                             <h3 className="recipe-header">{recipe.name}</h3>
                             <p className="recipe-time">Время приготовления: {this.formatMinutes(recipe.cookingDuration)}</p>
                             {
