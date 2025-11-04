@@ -70,14 +70,6 @@ class MainPage extends Component {
         }
     };
 
-    // toggleFavorite = (id) => {
-    //     this.setState(({ favorites }) => ({
-    //         favorites: favorites.includes(id)
-    //             ? favorites.filter(favId => favId !== id)
-    //             : [...favorites, id]
-    //     }));
-    // }
-
 
     render() {
 
@@ -96,6 +88,8 @@ class MainPage extends Component {
                     if (subFilter === '2step') return items.filter(item => item.description.steps.length === 2);
                     if (subFilter === '3stepAndMore') return items.filter(item => item.description.steps.length >= 3);
                     return items;
+                case 'InFavoritesFilter':
+                    return items.filter(item => item.isFavorite);
                 default:
                     return items;
             }

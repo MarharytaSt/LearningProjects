@@ -30,7 +30,8 @@ class RecipeFilter extends Component {
         const buttonsData = [
             { name: '', label: 'Все рецепты' },
             { name: 'CookingDurationFilter', label: 'Время приготовления' },
-            { name: 'StepsFilter', label: 'Количество шагов' }
+            { name: 'StepsFilter', label: 'Количество шагов' },
+            {name: 'InFavoritesFilter', label: 'В избранном'}
         ]
 
 
@@ -91,6 +92,13 @@ class RecipeFilter extends Component {
                             3 шага и больше
                         </button>
                     </div>
+                )}
+                {filter === 'InFavoritesFilter' && (
+                    <button
+                    onClick={() => this.onFilterSelected('InFavoritesFilter')}
+                    >
+                        В избранном
+                    </button>
                 )}
             </div>
         )
