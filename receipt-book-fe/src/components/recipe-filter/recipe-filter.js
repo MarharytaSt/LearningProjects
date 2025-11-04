@@ -93,13 +93,6 @@ class RecipeFilter extends Component {
                         </button>
                     </div>
                 )}
-                {filter === 'InFavoritesFilter' && (
-                    <button
-                    onClick={() => this.onFilterSelected('InFavoritesFilter')}
-                    >
-                        В избранном
-                    </button>
-                )}
             </div>
         )
     }
