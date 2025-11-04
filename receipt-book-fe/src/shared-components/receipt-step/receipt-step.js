@@ -7,25 +7,25 @@ import './receipt-step.css';
 
 class ReceiptStep extends Component {
 
-    packStepData = (propName, propValue) => {
-        const { setStepData, stepOrder } = this.props;
-        setStepData(stepOrder, propName, propValue);
-    }
 
     render() {
-        const { stepOrder, deleteStep } = this.props;
+        const { stepOrder, deleteStep, stepData, setStepData } = this.props;
         return (
             <div className="step">
                 <Input
                     name="stepOrder"
                     type="number"
                     placeholder="Порядок шага"
-                    setFormData={this.packStepData} />
+                    value={stepData.stepOrder ?? stepOrder}
+                    setFormData={(name, value) => setStepData(stepOrder, name, value)}
+                />
                 <Input
                     name="stepDescription"
                     type="text"
                     placeholder="Описание шага"
-                    setFormData={this.packStepData} />
+                    value={stepData.stepDescription || ''}
+                    setFormData={(name, value) => setStepData(stepOrder, name, value)}
+                />
                 <ActionsButton
                     btnContent="Удалить"
                     clickHandler={() => deleteStep(stepOrder)} />

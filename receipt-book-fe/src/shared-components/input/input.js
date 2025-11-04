@@ -12,8 +12,9 @@ class Input extends Component {
             <div className="text-input">
                 <input
                     type={type}
+                    name={name}
                     placeholder={placeholder}
-                    value={value}
+                    value={value ?? ''}
                     onChange={(e) => setFormData(name, e.target.value)}
                     {...rest} />
             </div>

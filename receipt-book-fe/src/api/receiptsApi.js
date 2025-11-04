@@ -11,7 +11,8 @@ export async function postReceipt(receipt) {
                 stepOrder: index,
                 stepDescription: step.stepDescription || ''
             }))
-        }
+        },
+        isFavorite: false
     };
 
     const response = await fetch(API_URL, {
