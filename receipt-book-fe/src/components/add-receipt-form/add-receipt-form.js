@@ -2,7 +2,7 @@ import { Component } from "react";
 import Input from '../../shared-components/input/input';
 import ReceiptStep from '../../shared-components/receipt-step/receipt-step';
 import ActionsButton from '../../shared-components/actions-button/actions-button';
-import {withRouter} from '../../shared-components/utils/withRouter.js';
+import { withRouter } from '../../shared-components/utils/withRouter.js';
 import { postReceipt } from "../../api/receiptsApi.js";
 import './add-receipt-form.css';
 
@@ -16,42 +16,44 @@ class AddReceiptForm extends Component {
                 steps: []
             },
             stepCount: 1,
-            stepComponents: []
         };
-
-        this.generateStepComponents();
     }
 
-    
 
     createReceipt = async () => {
-        const {name, cookingDuration, description, steps} = this.state.receipt;
+        const { name, cookingDuration, description, steps } = this.state.receipt;
 
-        if(!name || name.trim() === ''){
+        if (!name || name.trim() === '') {
             return alert("Введите название рецепта!");
         }
 
-        if(!cookingDuration || cookingDuration <= 0){
+        if (!cookingDuration || cookingDuration <= 0) {
             return alert("Укажите время приготовления!");
         }
 
-        if(!description || description === ''){
+        if (!description || description === '') {
             return alert("Добавьте краткое описание!");
         }
 
-        if(!steps || steps.length === 0 || !steps[0].stepDescription){
+        if (!Array.isArray(steps) || steps.length === 0 || !steps[0]?.stepDescription) {
             return alert("Добавьте хотя бы один шаг!");
         }
 
+        const sortedSteps = [...steps].sort((a,b) => a.stepOrder - b.stepOrder);
+        const formattedReceipt = {
+            ...this.state.receipt,
+            steps: sortedSteps
+        };
+
         try {
-            await postReceipt(this.state.receipt);
+            await postReceipt(formattedReceipt);
             alert('Рецепт успешно сохранен!');
             this.resetForm();
             this.props.router.navigate('/');
         } catch (error) {
             alert(error.message);
             console.error(error);
-        }  
+        }
     }
 
 
@@ -66,61 +68,32 @@ class AddReceiptForm extends Component {
 
     setStepData = (stepIndex, propName, propValue) => {
         const { receipt } = this.state;
- 
-        if (!receipt.steps[stepIndex]) {
-            const stepObj = {
-                [propName]: propValue
-            };
-            receipt.steps.push(stepObj);
-        } else {
-            receipt.steps[stepIndex] = {
-                ...receipt.steps[stepIndex],
-                [propName]: propValue
-            };
+        const updatedSteps = [...receipt.steps];
+
+        const existingStep = updatedSteps[stepIndex] || {};
+        updatedSteps[stepIndex] = {
+            ...existingStep,
+            stepOrder: stepIndex,
+            [propName]: propValue
         }
 
-        this.setState({ receipt });
-    }
+        this.setState({
+            receipt: {
+                ...receipt,
+                steps: updatedSteps
+            }
+        });
+    };
 
-    generateStepComponents = () => {
-        const { stepCount, stepComponents } = this.state;
-        const stepComponentIndex = stepComponents.length;
-
-        for (let index = stepComponentIndex; index < stepCount; index++) {
-            stepComponents.push(<div>
-                <ReceiptStep
-                    key={index}
-                    stepOrder={index}
-                    deleteStep={this.deleteStep}
-                    setStepData={this.setStepData}
-                />
-            </div>);
-        }
-
-        this.setState({ stepComponents });
-    }
+   
 
     addStep = () => {
-        this.setState(
-            {stepCount: this.state.stepCount + 1},
-            () => this.generateStepComponents()
-        );
+        this.setState(prev => ({ stepCount: prev.stepCount + 1 }));
     };
 
     deleteStep = (stepIndex) => {
-        const { stepComponents, stepCount } = this.state;
-        const updatedStepCount = stepCount - 1;
-
-        if(stepIndex === 0)return;
-        if (updatedStepCount === 0) {
-            return;
-        }
-
-        const updatedStepComponents = stepComponents.filter((_, i) => i !== stepIndex);
-        this.setState({
-            stepComponents: updatedStepComponents,
-            stepCount: stepCount - 1
-        });
+        if (stepIndex === 0 || this.state.stepCount <= 1) return;
+        this.setState(prev => ({ stepCount: prev.stepCount - 1 }));
     }
 
     resetForm = () => {
@@ -134,14 +107,11 @@ class AddReceiptForm extends Component {
             stepCount: 1,
             stepComponents: []
         }, () => {
-            this.generateStepComponents();
             this.props.router.navigate('/');
         });
     }
 
     render() {
-        const { stepComponents } = this.state;
-
         return (
             <div className="receipt-form">
                 <div className="input-group">
@@ -156,17 +126,25 @@ class AddReceiptForm extends Component {
                         name="cookingDuration"
                         type="number"
                         placeholder="Время приготовления"
-                        setFormData={this.setFormData} 
+                        setFormData={this.setFormData}
                         value={this.state.receipt.cookingDuration} />
                     <Input
                         name="description"
                         type="text"
                         placeholder="Краткое описание рецепта"
-                        setFormData={this.setFormData} 
+                        setFormData={this.setFormData}
                         value={this.state.receipt.description || ''} />
                 </div>
                 <div className="steps-section">
-                    {stepComponents}
+                    {Array.from({ length: this.state.stepCount }).map((_, index) => (
+                        <ReceiptStep
+                            key={`step-${index}`}
+                            stepOrder={index}
+                            stepData={this.state.receipt.steps[index] || {}}
+                            deleteStep={this.deleteStep}
+                            setStepData={this.setStepData}
+                        />
+                    ))}
                 </div>
                 <div className="add-step-button">
                     <ActionsButton
@@ -175,9 +153,9 @@ class AddReceiptForm extends Component {
                         className="add-step" />
                 </div>
                 <div className="form-actions">
-                    <ActionsButton btnContent="Отмена" 
-                    clickHandler={this.resetForm}
-                    className="cancel" />
+                    <ActionsButton btnContent="Отмена"
+                        clickHandler={this.resetForm}
+                        className="cancel" />
                     <ActionsButton btnContent="Сохранить"
                         clickHandler={this.createReceipt}
                         className="safe" />
