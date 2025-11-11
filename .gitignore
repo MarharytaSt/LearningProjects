@@ -141,3 +141,4 @@ own-project-employees-app/package-lock.json
 own-project-employees-app/.gitignore
 own-project-employees-app-BE/package-lock.json
 own-project-employees-app-FE/package-lock.json
+**/package-lock.json
