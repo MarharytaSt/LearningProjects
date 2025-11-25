@@ -1,0 +1,52 @@
+import adyss from '../../resources/img/abyss.jpg';
+import './charList.sass';
+
+const charList = () => {
+    return (
+        <div className="char__list">
+            <ul className="char__grid">
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+                <li className="char__item">
+                    <img src={adyss} alt="abyss"/>
+                    <div className="char__name">Abyss</div>
+                </li>
+            </ul>
+            <button className='button button__main button__long'>
+                <div className='inner'>load more</div>
+            </button>
+        </div>
+    )
+}
+
+export default charList;
