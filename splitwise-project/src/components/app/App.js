@@ -8,7 +8,6 @@ function App() {
     <Router>
       <div className="App">
         <Header />
-        <MainPage />
         <Routes>
           <Route path="/" element={<MainPage/>}/>
           <Route path="/create-account" element={<CreateAccountPage/>}/>
