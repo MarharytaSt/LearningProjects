@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Form, Row, Col, Input, Select, Space, message } from "antd";
-import { Link } from "react-router-dom";
 import { MainPageRoute } from '../../settings/appRoutes';
 import splitwiseApi from '../../api/splitwiseApi';
 import FormItem from 'antd/es/form/FormItem';
@@ -247,8 +246,3 @@ const CreateAccountPage = () => {
 }
 
 export default CreateAccountPage;
-
-
-// {
-//
-//                                 }
