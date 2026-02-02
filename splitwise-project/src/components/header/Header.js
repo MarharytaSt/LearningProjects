@@ -14,7 +14,11 @@ const Header = () => {
         "/create-account": "Создание счёта"
     };
 
-    const title = titles[location.pathname];
+    let title = titles[location.pathname];
+
+    if(location.pathname.startsWith("/edit-account/")) {
+        title = "Управление счётом";
+    }
     
     return (
         <AntHeader style={{ background: "#1677ff", padding: "0 24px", height: 60, display: "flex", alignItems: "center" }}>

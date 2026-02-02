@@ -1,4 +1,3 @@
-import Base from 'antd/es/typography/Base';
 import { BaseUrl } from '../settings/apiSettings';
 const headers = { 'Content-Type': 'application/json' };
 

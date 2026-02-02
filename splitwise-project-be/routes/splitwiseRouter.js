@@ -23,6 +23,20 @@ router.get('/accounts', async (req, res) => {
   }
 });
 
+router.get('/accounts/:id', async (req, res) => {
+  const account = await repositoryService.findOneAsync(req.params.id);
+  res.status(200).json(account);
+});
+
+router.delete('/accounts/:id', async (req, res) => {
+  try {
+    await repositoryService.deleteOneAsync(req.params.id);
+    res.status(200).json({ message: "Account deleted" });
+  } catch (error) {
+    console.error("Ошибка при удалении:", error);
+    res.status(500).json({ message: "Ошибка сервера" });
+  }
+});
 
 
 
