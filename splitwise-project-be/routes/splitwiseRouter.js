@@ -38,6 +38,44 @@ router.delete('/accounts/:id', async (req, res) => {
   }
 });
 
+router.post('/accounts/:id/transactions', async (req, res) => {
+  const { id } = req.params;
+  const { participant, amount } = req.body;
+
+  const account = await repositoryService.findOneAsync(id);
+
+  if (!account) {
+    return res.status(404).json({ message: "Account not found" });
+  }
+
+  const user = account.participants.find(p => p.name === participant);
+
+  if (!user) {
+    return res.status(400).json({ message: "Participant not found" });
+  }
+
+  if(!Array.isArray(user.transactions)) {
+    user.transactions = [];
+  }
+
+  user.transactions.push({
+    amount: Number(amount),
+    date: new Date().toISOString()
+  });
+
+  const allTransactions = account.participants.flatMap(
+    p => p.transactions || []
+  );
+
+  account.total = allTransactions.reduce(
+    (sum, t) => sum + (t.amount || 0),
+    0
+  );
+
+  await repositoryService.updateOneAsync(id, account);
+
+  res.status(200).json(account);
+});
 
 
 export default router;

@@ -11,13 +11,17 @@ const Header = () => {
 
     const titles = {
         "/": "Splitwise Helper",
-        "/create-account": "Создание счёта"
+        "/create-account": "Создание счёта",
     };
 
     let title = titles[location.pathname];
 
     if(location.pathname.startsWith("/edit-account/")) {
         title = "Управление счётом";
+    }
+
+    if(location.pathname.startsWith("/add-transaction/")) {
+        title = "Добавление транзакции"
     }
     
     return (

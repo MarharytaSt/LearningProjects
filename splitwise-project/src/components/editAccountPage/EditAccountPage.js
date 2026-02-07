@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Divider, Form, Space, Modal, Input, message, Typography } from "antd";
-import { MainPageRoute } from '../../settings/appRoutes';
+import { MainPageRoute, AddTransactionPageRoute } from '../../settings/appRoutes';
 import splitwiseApi from '../../api/splitwiseApi';
 
 
@@ -20,11 +20,6 @@ const EditAccountPage = () => {
         equally: 'Поровну',
         shares: 'Долями'
     };
-
-    const debts = [
-        "Участник 1 должен участнику 2 - 10$",
-        "Участник 2 должен участнику 1 - 5$"
-    ];
 
     useEffect(() => {
         const load = async () => {
@@ -84,7 +79,9 @@ const EditAccountPage = () => {
                             border: "1px solid #e8e8e8"
                         }}
                     >
-                        <Text type="secondary">Сумма пока не рассчитана</Text>
+                        <Text strong style={{ fontSize: 20 }}>
+                            {account.total || 0} $
+                        </Text>
                     </div>
                 </Form.Item>
 
@@ -92,7 +89,7 @@ const EditAccountPage = () => {
 
                 <Form.Item>
                     <Space>
-                        <Button type="primary">Добавить транзакцию</Button>
+                        <Button type="primary" onClick={() => navigate(AddTransactionPageRoute(id))}>Добавить транзакцию</Button>
                         <Button>История транзакций</Button>
                         <Button danger onClick={() => setIsDeleteModalOpen(true)}>Удалить счёт</Button>
                         <Button onClick={() => navigate(MainPageRoute)}>
@@ -105,9 +102,9 @@ const EditAccountPage = () => {
 
                 <Card title="Баланс участников:" size="small">
                     <Space orientation='vertical' style={{ width: "100%" }}>
-                        {debts.map((item, index) => (
+                        {account.participants.map((p => (
                             <div
-                                key={index}
+                                key={p.name}
                                 style={{
                                     padding: "8px 12px",
                                     background: "#fff",
@@ -115,9 +112,13 @@ const EditAccountPage = () => {
                                     borderRadius: 6
                                 }}
                             >
-                                <Text strong>{item}</Text>
+                                <strong>{p.name}</strong>{""}
+                                <span style={{ color: p.balance < 0 ? "red" : "green" }}>
+                                    {p.balance} $
+                                </span>
+
                             </div>
-                        ))}
+                        )))}
                     </Space>
                 </Card>
             </Form>
