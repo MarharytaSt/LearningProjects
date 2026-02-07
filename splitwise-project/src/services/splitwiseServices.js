@@ -49,7 +49,7 @@ async function putAsync(path, body) {
     try {
         const response = await fetch(requestUrl, {
             method: "PUT",
-            headres: headers,
+            headers: headers,
             body: JSON.stringify(body)
         });
 
