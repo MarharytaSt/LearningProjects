@@ -23,6 +23,10 @@ const Header = () => {
     if(location.pathname.startsWith("/add-transaction/")) {
         title = "Добавление транзакции"
     }
+
+    if(location.pathname.startsWith("/transactions-history/")) {
+        title = "История транзакций"
+    }
     
     return (
         <AntHeader style={{ background: "#1677ff", padding: "0 24px", height: 60, display: "flex", alignItems: "center" }}>
