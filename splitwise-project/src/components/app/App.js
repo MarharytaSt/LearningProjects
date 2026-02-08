@@ -4,6 +4,7 @@ import MainPage from '../mainPage/MainPage';
 import CreateAccountPage from '../createAccountPage/CreateAccountPage';
 import EditAccountPage from "../editAccountPage/EditAccountPage";
 import AddTransactionPage from "../addTransactionPage/AddTransactionPage";
+import TransactionHistoryPage from "../transactionsHistoryPage/TransactionsHistoryPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/create-account" element={<CreateAccountPage/>}/>
           <Route path="/edit-account/:id" element={<EditAccountPage/>}/>
           <Route path="/add-transaction/:id" element={<AddTransactionPage/>}/>
+          <Route path="/transactions-history/:id" element={<TransactionHistoryPage/>}/>
         </Routes>
       </div>
     </Router>

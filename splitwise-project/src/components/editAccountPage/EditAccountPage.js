@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Divider, Form, Space, Modal, Input, message, Typography } from "antd";
-import { MainPageRoute, AddTransactionPageRoute } from '../../settings/appRoutes';
+import { MainPageRoute, AddTransactionPageRoute, TransactionHistoryPageRoute } from '../../settings/appRoutes';
 import splitwiseApi from '../../api/splitwiseApi';
 
 
@@ -90,7 +90,7 @@ const EditAccountPage = () => {
                 <Form.Item>
                     <Space>
                         <Button type="primary" onClick={() => navigate(AddTransactionPageRoute(id))}>Добавить транзакцию</Button>
-                        <Button>История транзакций</Button>
+                        <Button onClick={() => navigate(TransactionHistoryPageRoute(id))}>История транзакций</Button>
                         <Button danger onClick={() => setIsDeleteModalOpen(true)}>Удалить счёт</Button>
                         <Button onClick={() => navigate(MainPageRoute)}>
                             Назад
