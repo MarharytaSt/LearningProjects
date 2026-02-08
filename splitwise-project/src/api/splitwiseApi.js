@@ -8,7 +8,9 @@ const splitwiseApi = {
     updateAccount: (id, data) => api.putAsync(`/accounts/${id}`, data),
     deleteAccount: (id) => api.deleteAsync(`/accounts/${id}`),
 
-    addTransaction: (id, data) => api.postAsync(`/accounts/${id}/transactions`, data)
+    addTransaction: (id, data) => api.postAsync(`/accounts/${id}/transactions`, data),
+    deleteTransaction: (id, transactionId) => api.deleteAsync(`/accounts/${id}/transactions/${transactionId}`),
+    updateTransaction: (id, data) => api.putAsync(`/accounts/${id}/transactions/${data.transactionId}`, data)
 };
 
 export default splitwiseApi;
