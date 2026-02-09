@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Divider, Form, Space, Modal, Input, message, Typography } from "antd";
 import { MainPageRoute, AddTransactionPageRoute, TransactionHistoryPageRoute } from '../../settings/appRoutes';
 import splitwiseApi from '../../api/splitwiseApi';
+import {guessGender} from "../../utils/guessGender";
+import {toDative} from "../../utils/nameCases";
 
 
 const { Text } = Typography;
@@ -39,6 +41,18 @@ const EditAccountPage = () => {
 
         await splitwiseApi.deleteAccount(id);
         navigate(MainPageRoute);
+    }
+
+    const getVerb = (name) => {
+        const p = account.participants.find(x => x.name === name);
+        const gender = p?.gender || guessGender(name);
+        return gender === "female" ? "должна" : "должен";
+    }
+
+    const getDativeName = (name) => {
+        const p = account.participants.find(x => x.name === name);
+        const gender = p?.gender || guessGender(name);
+        return toDative(name, gender);
     }
 
     return (
@@ -102,9 +116,9 @@ const EditAccountPage = () => {
 
                 <Card title="Баланс участников:" size="small">
                     <Space orientation='vertical' style={{ width: "100%" }}>
-                        {account.participants.map((p => (
+                        {(account.debts || []).map((d => (
                             <div
-                                key={p.name}
+                                key={`${d.from}-${d.to}`}
                                 style={{
                                     padding: "8px 12px",
                                     background: "#fff",
@@ -112,10 +126,7 @@ const EditAccountPage = () => {
                                     borderRadius: 6
                                 }}
                             >
-                                <strong>{p.name}</strong>{""}
-                                <span style={{ color: p.balance < 0 ? "red" : "green" }}>
-                                    {p.balance} $
-                                </span>
+                                {d.from} {getVerb(d.from)} {getDativeName(d.to)}: {d.amount} $
 
                             </div>
                         )))}
