@@ -8,8 +8,8 @@ import FormItem from 'antd/es/form/FormItem';
 
 const CreateAccountPage = () => {
     const [participants, setParticipants] = useState([
-        { name: '', share: 0, transactions: [] },
-        { name: '', share: 0, transactions: [] }
+        { name: '', share: 0, transactions: []},
+        { name: '', share: 0, transactions: []}
     ]);
     const [splitType, setSplitType] = useState('equally');
     const [accountName, setAccountName] = useState('');

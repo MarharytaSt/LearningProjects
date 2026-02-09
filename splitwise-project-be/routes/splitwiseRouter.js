@@ -1,6 +1,7 @@
 import express from 'express';
 import repositoryService from '../services/repository.js';
 import { ObjectId } from 'mongodb';
+import {recalculateAccount} from '../services/calcLogic.js';
 
 
 
@@ -76,6 +77,7 @@ router.post('/accounts/:id/transactions', async (req, res) => {
     0
   );
 
+  recalculateAccount(account);
   await repositoryService.updateOneAsync(id, account);
 
   res.status(200).json(account);
@@ -116,7 +118,7 @@ router.delete('/accounts/:id/transactions/:transactionId', async (req, res) => {
     0
   );
 
-
+  recalculateAccount(account);
   await repositoryService.updateOneAsync(id, account);
 
   res.status(200).json({ message: "Transaction deleted!" });
@@ -147,7 +149,7 @@ router.put('/accounts/:id/transactions/:transactionId', async (req, res) => {
             return res.status(400).json({message: "Participant not found!"});
           }
 
-          if(!Array.isArray(newUser.transactions)) newUser.transaction = [];
+          if(!Array.isArray(newUser.transactions)) newUser.transactions = [];
           newUser.transactions.push(t);
         }
 
@@ -169,6 +171,7 @@ router.put('/accounts/:id/transactions/:transactionId', async (req, res) => {
     0
   );
 
+  recalculateAccount(account);
   await repositoryService.updateOneAsync(id, account);
 
   res.status(200).json({message: "Transaction updated!", account});
