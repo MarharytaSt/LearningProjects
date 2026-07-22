@@ -19,7 +19,7 @@ const start = async () => {
             allowedHeaders: ['Content-Type', 'Authorization']
         })
         await app.register(fastifyJwt, {
-            secret: env.jwtSecret
+            secret: env.jwtSecret;
         })
 
         await AppDataSourse.initialize();
