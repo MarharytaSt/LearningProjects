@@ -4,7 +4,7 @@ import { User } from "./entities/user.entity";
 import { Event } from "./entities/event.entity";
 import { EventParticipant } from "./entities/event-participant.entity";
 
-export const AppDataSourse = new DataSource({
+export const AppDataSource = new DataSource({
     type: 'postgres',
     url: env.databaseUrl,
     synchronize: false,
