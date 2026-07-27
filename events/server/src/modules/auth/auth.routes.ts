@@ -3,6 +3,7 @@ import { AppDataSource } from "../../db/data-source";
 import { User } from "../../db/entities/user.entity";
 import { loginSchema, registerSchema } from "./auth.schemas";
 import argon2 from 'argon2';
+import { create } from "node:domain";
 
 
 export const authRoutes: FastifyPluginAsync = async (app) => {
@@ -61,20 +62,20 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
             })
         }
 
-        const {email, password} = parseBody.data;
-        const user = await userRepository.findOne({where: {email}});
+        const { email, password } = parseBody.data;
+        const user = await userRepository.findOne({ where: { email } });
 
-        if(!user) {
-            return reply.code(401).send({message: 'Неверный логин или пароль'})
+        if (!user) {
+            return reply.code(401).send({ message: 'Неверный логин или пароль' })
         }
 
         const isPasswordValid = await argon2.verify(user.passwordHash, password);
 
-        if(!isPasswordValid) {
-            return reply.code(401).send({message: 'Неверный логин или пароль'})
+        if (!isPasswordValid) {
+            return reply.code(401).send({ message: 'Неверный логин или пароль' })
         }
 
-        const token = await reply.jwtSign({sub: user.id, email: user.email});
+        const token = await reply.jwtSign({ sub: user.id, email: user.email });
 
         return reply.send({
             token,
@@ -83,6 +84,23 @@ export const authRoutes: FastifyPluginAsync = async (app) => {
                 emai: user.email,
                 name: user.name
             }
+        })
+    })
+
+    app.get('/me', { preHandler: [app.authenticate] }, async (request, reply) => {
+        const userId = request.user.sub
+        const user = await userRepository.findOne({ where: { id: userId } })
+
+        if (!user) {
+            return reply.code(404).send({ message: 'Пользователь не найден' })
+        }
+
+        return reply.send({
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
         })
     })
 
