@@ -23,7 +23,7 @@ export class Event {
     address!: string
 
     @Column({ type: 'timestamptz' })
-    staretedAt!: Date
+    startedAt!: Date
 
     @ManyToOne(() => User, (user) => user.events, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'ownerId' })
