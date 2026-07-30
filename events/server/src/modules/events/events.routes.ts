@@ -98,24 +98,40 @@ export const eventsRoutes: FastifyPluginAsync = async (app) => {
             startedAt
         } = parsedBody.data;
 
-        if(title !== undefined) {
+        if (title !== undefined) {
             event.title = title
         }
-        if(description !== undefined) {
+        if (description !== undefined) {
             event.description = description
         }
-        if(capacity !== undefined) {
+        if (capacity !== undefined) {
             event.capacity = capacity
         }
-        if(address !== undefined) {
+        if (address !== undefined) {
             event.address = address
         }
-        if(startedAt !== undefined) {
+        if (startedAt !== undefined) {
             event.startedAt = startedAt
         }
-       
+
         const updatedEvent = await eventRepository.save(event);
 
         return reply.send(updatedEvent);
+    })
+
+    app.delete<{ Params: EventParams }>('/:id', { preHandler: [app.authenticate] }, async (request, reply) => {
+        const event = await eventRepository.findOne({ where: { id: request.params.id } });
+        if (!event) {
+            return reply.code(404).send({ message: 'Событие не найдено' })
+        }
+
+        if (event.ownerId !== request.user.sub) {
+            return reply.code(403).send({
+                message: 'Только владелец может удалить свое событие'
+            })
+        }
+
+        await eventRepository.delete({id: event.id})
+        return reply.code(204).send()
     })
 }
