@@ -24,5 +24,5 @@ export class EventParticipant {
     userId!: string
 
     @CreateDateColumn({type: 'timestamptz'})
-    joinedAd!: Date
+    joinedAt!: Date
 }
