@@ -136,7 +136,7 @@ export const eventsRoutes: FastifyPluginAsync = async (app) => {
     })
 
     app.post<{ Params: EventParams }>('/:id/join', { preHandler: [app.authenticate] }, async (request, reply) => {
-        const event = await eventRepository.findOne({where: {id: request.params.id}})
+        const event = await eventRepository.findOne({ where: { id: request.params.id } })
 
         if (!event) {
             return reply.code(404).send({ message: 'Событие не найдено' })
@@ -149,20 +149,20 @@ export const eventsRoutes: FastifyPluginAsync = async (app) => {
         }
 
         const existingParticipation = await participantsRepository.findOne({
-            where: {eventId: event.id, userId: request.user.sub}
+            where: { eventId: event.id, userId: request.user.sub }
         })
 
-        if(existingParticipation) {
+        if (existingParticipation) {
             return reply.code(409).send({
                 message: 'Вы уже присоединились к собыию'
             })
         }
 
         const participationCount = await participantsRepository.count({
-            where: {eventId: event.id}
+            where: { eventId: event.id }
         })
 
-        if(participationCount >= event.capacity) {
+        if (participationCount >= event.capacity) {
             return reply.code(409).send({
                 message: 'Свободных мест нет'
             })
@@ -180,4 +180,32 @@ export const eventsRoutes: FastifyPluginAsync = async (app) => {
             participation: savedParticipation
         })
     })
+
+    app.delete<{ Params: EventParams }>(
+        '/:id/join',
+        { preHandler: [app.authenticate] },
+        async (request, reply) => {
+            const event = await eventRepository.findOne({ where: { id: request.params.id } })
+
+            if (!event) {
+                return reply.code(404).send({ message: 'Событие не найдено' })
+            }
+
+            const existingParticipation = await participantsRepository.findOne({
+                where: { eventId: event.id, userId: request.user.sub }
+            })
+
+            if (!existingParticipation) {
+                return reply.code(409).send({
+                    message: 'Вы уже присоединились к собыию'
+                })
+            }
+
+            await participantsRepository.delete({
+                id: existingParticipation.id
+            })
+
+            return reply.code(204).send();
+
+        })
 }
