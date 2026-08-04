@@ -24,6 +24,7 @@ export type UserProfile = UserPublic & {
 export type AuthLoginRequest = {
     email: string;
     password: string;
+    name: string;
 }
 
 export type AuthResponse = {
