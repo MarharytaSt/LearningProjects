@@ -52,7 +52,7 @@ export type EventDto = {
 export type CreateEventRequest = {
     title: string;
     description: string;
-    capacity: string;
+    capacity: number;
     address: string;
     startedAt: string;
 }
