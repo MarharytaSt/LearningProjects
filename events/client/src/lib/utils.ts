@@ -2,6 +2,8 @@ import { isAxiosError } from "axios"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import type { ApiErrorResponse } from "@/shared/api/types"
+import {format, isValid, parseISO} from "date-fns";
+import {ru} from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -34,4 +36,12 @@ export function getUserInitials(name: string) {
 
 
   return (parts[0]![0!] + parts[parts.length - 1]![0]).toLocaleUpperCase()
+}
+
+export function formatStartsAt(iso: string) {
+  const d = parseISO(iso);
+
+  if(!isValid(d)) return iso
+
+  return format(d, 'PPp', {locale: ru})
 }
