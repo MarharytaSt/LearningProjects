@@ -22,6 +22,7 @@ type EventsState = {
     updateEvent: (id: string, payload: UpdateEventRequest) => Promise<EventDto>;
     removeEvent: (id: string) => Promise<void>;
     joinEvent: (id: string) => Promise<void>;
+    leaveEvent: (id: string) => Promise<void>;
 
 }
 
