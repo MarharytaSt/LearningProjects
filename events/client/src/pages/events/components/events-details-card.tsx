@@ -12,6 +12,7 @@ type Props = {
     eventsError: string | null;
     onJoin: () => void;
     onLeave: () => void;
+    onRemove: () => void;
 }
 
 
@@ -23,6 +24,7 @@ export function EventDetailsCard({
     eventsError,
     onJoin,
     onLeave,
+    onRemove,
 }: Props) {
     return (<>
         {
@@ -73,13 +75,21 @@ export function EventDetailsCard({
                                     Редактировать
                                 </Link>
                             </Button>
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                disabled={mutationLoading}
+                                onClick={onRemove}
+                            >
+                                Удалить
+                            </Button>
                         </>
                     ) : isJoined ? (
                         <>
                             <Button
                                 variant="outline"
                                 disabled={mutationLoading}
-                                onClick={() => onLeave()}
+                                onClick={onLeave}
                             >
                                 Выйти из события
                             </Button>
@@ -87,7 +97,7 @@ export function EventDetailsCard({
                     ) : (
                         <Button
                             disabled={mutationLoading}
-                            onClick={() => onJoin()}
+                            onClick={onJoin}
                         >
                             Присоединиться
                         </Button>

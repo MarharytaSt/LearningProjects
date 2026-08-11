@@ -2,7 +2,7 @@ import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores/auth-store";
 import { useEventsStore } from "@/stores/events-store";
-import { Link, Navigate, useParams } from "react-router-dom"
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
 import { EventDetailsCard } from "../components/events-details-card";
 import { useEventById } from "../hooks/use-event-by-id";
 
@@ -14,6 +14,8 @@ export function EventDetailsPage() {
     const leaveEvent = useEventsStore(s => s.leaveEvent);
     const mutationLoading = useEventsStore(s => s.mutationLoading);
     const eventsError = useEventsStore(s => s.eventsError);
+    const removeEvent = useEventsStore(s => s.removeEvent);
+    const navigate = useNavigate();
 
     const { event, loading, notFound, loadError } = useEventById(id, {
         prefetchJoinedEvents: true
@@ -51,19 +53,32 @@ export function EventDetailsPage() {
 
     async function handleJoin() {
         try {
-            await joinEvent(eventId)
+            await joinEvent(eventId);
         } catch (error) {
-            
+
         }
-     }
-    
-     async function handleLeave() {
+    }
+
+    async function handleLeave() {
         try {
-            await leaveEvent(eventId)
+            await leaveEvent(eventId);
+        } catch (error) {
+
+        }
+    }
+
+    async function handleRemove() {
+        const ok = confirm('Удалить событие');
+
+        if(!ok) return;
+
+        try {
+            await removeEvent(eventId);
+            navigate('/events', {replace: true});
         } catch (error) {
             
         }
-     }
+    }
 
     return (
         <PageShell title={event.title}>
@@ -84,12 +99,9 @@ export function EventDetailsPage() {
                     isOwner={isOwner}
                     mutationLoading={mutationLoading}
                     eventsError={eventsError}
-                    onLeave={() => {
-                        handleLeave()
-                    }}
-                    onJoin={() => {
-                        handleJoin()
-                    }}
+                    onLeave={handleLeave}
+                    onJoin={handleJoin}
+                    onRemove={handleRemove}
 
                 />
             </div>
