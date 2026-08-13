@@ -56,7 +56,7 @@ export function EventDetailsCard({
                 </div>
                 <div>
                     <p className="text-muted-foreground">Описание</p>
-                    <p>До {event.description} участников</p>
+                    <p>{event.description}</p>
                 </div>
             </CardContent>
             <CardFooter className="flex flex-wrap gap-2 border-t">

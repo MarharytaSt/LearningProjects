@@ -12,7 +12,7 @@ type Props = {
 }
 
 
-export function AppSidebarFooter({
+export function AppSidebarUserFooter({
     user,
     sidebarExpanded,
     onLogout
@@ -27,11 +27,11 @@ export function AppSidebarFooter({
                                 <AvatarFallback className="rounded-lg text-xs">
                                     {getUserInitials(user.name)}
                                 </AvatarFallback>
-                                <div className="min-w-0  flex-1">
-                                    <p className="truncate text-sm font-medium">{user.name}</p>
-                                    <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-                                </div>
                             </Avatar>
+                            <div className="min-w-0  flex-1">
+                                <p className="truncate text-sm font-medium">{user.name}</p>
+                                <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                            </div>
                         </div>
                     </SidebarMenuItem>
                 ) : null
@@ -47,5 +47,5 @@ export function AppSidebarFooter({
                 </SidebarMenuButton>
             </SidebarMenuItem>
         </SidebarMenu>
-    )
+    );
 }
