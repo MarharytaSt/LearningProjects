@@ -11,7 +11,7 @@ import { ArrowLeft } from "lucide-react"
 import { useState, type SubmitEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
-type EventFomrmValues = CreateEventRequest
+type EventFormValues = CreateEventRequest
 
 type Props = {
     title: string
@@ -21,8 +21,8 @@ type Props = {
     cancelTo: string
     submitLabel: string
     submittingLabel: string
-    onSubmit: (values: EventFomrmValues) => Promise<void>
-    inputValues?: EventFomrmValues 
+    onSubmit: (values: EventFormValues) => Promise<void>
+    inputValues?: EventFormValues 
     error?: string | null
     loading?: boolean
     className?: string
@@ -31,7 +31,7 @@ type Props = {
 export function EventForm({
     title,
     subtitle,
-    backTo: batckTo,
+    backTo: backTo,
     backLabel,
     cancelTo,
     submitLabel,
@@ -93,13 +93,13 @@ export function EventForm({
                     size="sm"
                     asChild
                 >
-                    <Link to={batckTo}>
+                    <Link to={backTo}>
                         <ArrowLeft className="size-4"/>
                         { backLabel }
                     </Link>
                 </Button>
                 <h1 className="font-heading text-2xl font-semibold">{title}</h1>
-                <p className="text-sm text-muted-forground">{subtitle}</p>
+                <p className="text-sm text-muted-foreground">{subtitle}</p>
             </div>
 
             <Card>
@@ -107,7 +107,7 @@ export function EventForm({
                     <CardContent className="space-y-6 pt-6">
                         {
                             topError && (
-                                <p className="text-sm text-desctructive">
+                                <p className="text-sm text-destructive">
                                     { topError }
                                 </p>
                             )
@@ -162,7 +162,7 @@ export function EventForm({
                                 />
                             </Field>
                             <Field>
-                                <div className="flex-items-center justify-between gap-4">
+                                <div className="flex items-center justify-between gap-4">
                                     <FieldLabel
                                         htmlFor="capacity-slider"
                                         className="inline-flex items-center gap-2"

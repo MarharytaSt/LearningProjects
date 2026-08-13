@@ -68,7 +68,7 @@ export function EventsMyPage() {
                         <TabsTrigger value="created" className="flex-1">
                             Созданные
                         </TabsTrigger>
-                        <TabsTrigger value="created" className="flex-1">
+                        <TabsTrigger value="joined" className="flex-1">
                             Учавствую
                         </TabsTrigger>
                     </TabsList>

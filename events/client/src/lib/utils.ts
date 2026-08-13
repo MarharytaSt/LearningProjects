@@ -5,7 +5,7 @@ import type { ApiErrorResponse } from "@/shared/api/types"
 import {format, isValid, parseISO} from "date-fns";
 import {ru} from "date-fns/locale";
 
-export const DATETIME_LOCAL_INPUT_FORMAT = "yyy-MM-dd'T'HH:mm";
+export const DATETIME_LOCAL_INPUT_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

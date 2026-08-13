@@ -8,7 +8,7 @@ export function AppSidebarBrand () {
             <SidebarMenuItem>
                 <SidebarMenuButton size="lg" asChild>
                     <Link to='/events' className="gap-2">
-                        <span className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-forground">
+                        <span className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
                             <CalendarIcon></CalendarIcon>
                         </span>
                         <span className="font-heading font-semibold">

@@ -8,7 +8,7 @@ export const eventsApi = {
         return data;
     },
     async getById(id: string): Promise<EventDto> {
-        const { data } = await http.get<EventDto>(`/events${id}`);
+        const { data } = await http.get<EventDto>(`/events/${id}`);
 
         return data;
     },
@@ -23,7 +23,7 @@ export const eventsApi = {
         return data;
     },
     async remove(id: string): Promise<void> {
-         await http.delete(`/evenys/${id}`)
+         await http.delete(`/events/${id}`)
 
         
     },

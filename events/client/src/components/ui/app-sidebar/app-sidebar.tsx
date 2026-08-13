@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from "../sidebar"
 import { AppSidebarBrand } from "./app-sidebar-brand";
 import { AppSidebarNav } from "./app-sidebar-nav";
-import { AppSidebarFooter } from "./app-sidebar-footer";
+import { AppSidebarUserFooter } from "./app-sidebar-footer";
 
 
 export function AppSidebar() {
@@ -24,12 +24,13 @@ export function AppSidebar() {
             <SidebarContent>
                 <AppSidebarNav />
             </SidebarContent>
+
             <SidebarFooter>
-                <AppSidebarFooter
+                <AppSidebarUserFooter
                     user={user}
                     sidebarExpanded={state === 'expanded'}
                     onLogout={() => logout()}
-                ></AppSidebarFooter>
+                ></AppSidebarUserFooter>
             </SidebarFooter>
         </Sidebar>
     )
