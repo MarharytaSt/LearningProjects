@@ -44,3 +44,19 @@ Tech: React, Express, MongoDB, Ant Design
 - Dashboard and multiple management pages
 - Transaction history tracking
 - Clean UI with Ant Design
+
+---
+
+## Events Project
+Tech: React, TypeScript, Vite, Fastify, PostgreSQL, Zustand, JWT  
+🔗 https://github.com/MarharytaSt/LearningProjects/tree/Events  
+
+- Full-stack web application for managing events
+- User registration and JWT authentication
+- Create, edit and delete events with owner permissions
+- Join and leave events
+- “My Events” section with created and joined events
+- Event statistics and capacity management
+- Zod validation and secure password hashing with Argon2
+
+
